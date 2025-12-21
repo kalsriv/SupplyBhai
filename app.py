@@ -1,6 +1,6 @@
 import os
 import streamlit as st
-from rag_utility import process_document_to_chroma_db, answer_question
+from rag_helper_utility import process_document_to_chroma_db, answer_question
 
 
 # set the working directory
