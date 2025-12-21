@@ -10,4 +10,3 @@ unstructured[pdf]
 langchain-unstructured
 langchain-chroma
 langchain-groq
-pandas
