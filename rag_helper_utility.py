@@ -53,7 +53,7 @@ def process_document_to_chroma_db(file_path):
 # ---------------------------------------------------------
 def build_rag_chain(llm, retriever):
     prompt = ChatPromptTemplate.from_template("""
-    You are an internal ConvAI assistant. Use ONLY the retrieved context to answer.
+    You are a supply chain expert. Use ONLY the retrieved context to answer.
 
     Context:
     {context}
