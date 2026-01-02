@@ -8,6 +8,7 @@ working_dir = os.path.dirname(os.path.abspath(__file__))
 st.title("SupplyBhai - Your Supply Chain Assistant 🤖")
 st.subheader("Ask questions about your global supply chain documents")
 
+
 # -------------------------------
 # 1. AUTO-LOAD ALL PDFs FROM FOLDER
 # -------------------------------
