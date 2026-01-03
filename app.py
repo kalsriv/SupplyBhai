@@ -1,6 +1,6 @@
 import os
 import streamlit as st
-from rag_helper_utility import process_document_to_chroma_db, answer_question
+from rag_helper_utility_push import process_document_to_chroma_db, answer_question
 
 # Set working directory
 working_dir = os.path.dirname(os.path.abspath(__file__))
