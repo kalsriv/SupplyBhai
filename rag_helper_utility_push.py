@@ -8,10 +8,10 @@ from langchain_groq import ChatGroq
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_community.document_loaders import PyPDFLoader
 
 load_dotenv()
 
+# Working directory
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Embeddings + LLM
@@ -23,46 +23,71 @@ llm = ChatGroq(
 )
 
 # ---------------------------------------------------------
-# PROCESS DOCUMENT → CHROMA VECTORSTORE
+# PROCESS DOCUMENT → CHROMA VECTORSTORE (CLOUD-SAFE VERSION)
 # ---------------------------------------------------------
 def process_document_to_chroma_db(file_path):
     """
-    Accepts a FULL file path.
-    Loads PDF → splits → embeds → stores in Chroma.
+    Cloud-optimized version.
+    Does NOT embed or process PDFs.
+    If the vectorstore exists, skip immediately.
     """
 
-    loader = PyPDFLoader(file_path)
-    documents = loader.load()
+    # If vectorstore already exists, skip ingestion
+    if os.path.exists(f"{working_dir}/doc_vectorstore"):
+        return 0
 
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1500,
-        chunk_overlap=50
-    )
-    texts = text_splitter.split_documents(documents)
-
-    Chroma.from_documents(
-        documents=texts,
-        embedding=embedding,
-        persist_directory=f"{working_dir}/doc_vectorstore"
-    )
-
+    # Cloud should NEVER embed — return immediately
     return 0
 
-# ---------------------------------------------------------
-# BUILD RAG CHAIN
-# ---------------------------------------------------------
+
+# # ---------------------------------------------------------
+# # BUILD RAG CHAIN
+# # ---------------------------------------------------------
+# def build_rag_chain(llm, retriever):
+#     prompt = ChatPromptTemplate.from_template("""
+#     You are a supply chain expert. Use ONLY the retrieved context to answer.
+
+#     Context:
+#     {context}
+
+#     Question:
+#     {question}
+
+#     Answer:
+#     """)
+
+#     rag_chain = (
+#         {
+#             "context": lambda x: retriever.invoke(x["question"]),
+#             "question": lambda x: x["question"]
+#         }
+#         | prompt
+#         | llm
+#         | StrOutputParser()
+#     )
 def build_rag_chain(llm, retriever):
     prompt = ChatPromptTemplate.from_template("""
-    You are a supply chain expert. Use ONLY the retrieved context to answer.
+You are SupplyBhai — a senior global supply chain consultant with 20+ years of experience.
+Your job is to give clear, confident, expert answers based strictly on the retrieved context.
 
-    Context:
-    {context}
+Follow these rules:
 
-    Question:
-    {question}
+1. Never mention the words “context”, “retriever”, “documents”, or “PDF”.
+2. Do not say what is missing. If the information is not in the context, give the best expert interpretation based on what *is* present.
+3. Write like a human expert — concise, authoritative, and practical.
+4. If the context is thin, infer logically but stay grounded in what is provided.
+5. Provide actionable insights, not summaries.
 
-    Answer:
-    """)
+---
+
+### Retrieved Information:
+{context}
+
+### User Question:
+{question}
+
+### Expert Answer:
+""")
 
     rag_chain = (
         {
@@ -75,6 +100,8 @@ def build_rag_chain(llm, retriever):
     )
 
     return rag_chain
+
+
 
 # ---------------------------------------------------------
 # ANSWER USER QUESTION
