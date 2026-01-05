@@ -8,12 +8,17 @@ from st_paywall import add_auth
 import streamlit as st
 from st_paywall import add_auth
 
+# auth = add_auth(
+#     publishable_key=st.secrets["STRIPE_PUBLISHABLE_KEY"],
+#     secret_key=st.secrets["STRIPE_SECRET_KEY"],
+#     webhook_secret=st.secrets["WEBHOOK_SECRET"],
+#     product_id="prod_XXXX",  # your Stripe product ID
+# )
+
 auth = add_auth(
-    publishable_key=st.secrets["STRIPE_PUBLISHABLE_KEY"],
-    secret_key=st.secrets["STRIPE_SECRET_KEY"],
-    webhook_secret=st.secrets["WEBHOOK_SECRET"],
-    product_id="prod_XXXX",  # your Stripe product ID
+    product_id="prod_TjUjjfnjwS4Ks0"
 )
+
 
 # If user is not logged in, show login UI
 if not auth.is_user_logged_in():
