@@ -48,18 +48,7 @@ st.markdown("""
 st.markdown('<p class="small-text">⏳ Loading…</p>', unsafe_allow_html=True)
 
 
-# doc_folder = os.path.join(working_dir, "doc_to_upload")
 
-# # Ensure folder exists
-# if not os.path.exists(doc_folder):
-#     st.error(f"Folder not found: {doc_folder}")
-# else:
-#     for file in os.listdir(doc_folder):
-#         if file.endswith(".pdf"):
-#             file_path = os.path.join(doc_folder, file)
-#             process_document_to_chroma_db(file_path)
-
-#     # st.success("Knowledgebase updated!")
 st.markdown(
     "<p style='color: green; font-size: 0.8rem;'>✔️ Knowledgebase updated!</p>",
     unsafe_allow_html=True
