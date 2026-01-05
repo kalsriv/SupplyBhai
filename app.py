@@ -18,15 +18,30 @@ with col1:
         url = create_customer_portal(st.session_state.email)
         st.markdown(f"[Open Customer Portal]({url})")
 
+manage_clicked = st.markdown("""
+<button class="icon-btn" onclick="window.location.href='/manage'">
+    <img src="https://www.svgrepo.com/show/533558/settings.svg">
+    Manage Subscription
+</button>
+""", unsafe_allow_html=True)
+
+
 with col2:
     if st.button("Logout"):
         logout()
+
+logout_clicked = st.markdown("""
+<button class="icon-btn" onclick="window.location.href='/logout'">
+    <img src="https://www.svgrepo.com/show/533300/logout.svg">
+    Logout
+</button>
+""", unsafe_allow_html=True)
 
 
 # Set working directory
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
-st.title("SupplyBhai - Your Supply Chain Assistant 🤖")
+# st.title("SupplyBhai - Your Supply Chain Assistant 🤖")
 st.subheader("Ask questions about your global supply chain documents")
 
 
