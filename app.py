@@ -7,19 +7,19 @@ import streamlit as st
 # from st_paywall import add_auth
 
 import st_paywall
-import inspect
-# import streamlit as st
+# import inspect
+# # import streamlit as st
 
-st.write(inspect.getsource(st_paywall.add_auth))
+# st.write(inspect.getsource(st_paywall.add_auth))
 
 
 
-# auth = add_auth(
-#     publishable_key=st.secrets["STRIPE_PUBLISHABLE_KEY"],
-#     secret_key=st.secrets["STRIPE_SECRET_KEY"],
-#     webhook_secret=st.secrets["WEBHOOK_SECRET"],
-#     product_id="prod_XXXX",  # your Stripe product ID
-# )
+auth = add_auth(
+    publishable_key=st.secrets["STRIPE_PUBLISHABLE_KEY"],
+    secret_key=st.secrets["STRIPE_SECRET_KEY"],
+    webhook_secret=st.secrets["WEBHOOK_SECRET"],
+    product_id="prod_XXXX",  # your Stripe product ID
+)
 
 auth = add_auth(
     product_id="prod_TjUjjfnjwS4Ks0"

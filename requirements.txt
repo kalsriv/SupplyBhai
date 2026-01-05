@@ -1,14 +1,19 @@
 python-dotenv
 streamlit
-sentence-transformers
-langchain-community
+pandas
+
+# LangChain + RAG stack
 langchain
+langchain-community
+langchain-core
 langchain-huggingface
 langchain-text-splitters
-unstructured
-unstructured[pdf]
 langchain-unstructured
 langchain-chroma
 langchain-groq
-pandas
-st_paywall
+sentence-transformers
+unstructured
+unstructured[pdf]
+
+# Paywall (install from GitHub, NOT PyPI)
+st-paywall@git+https://github.com/tylerjrichards/st-paywall.git
