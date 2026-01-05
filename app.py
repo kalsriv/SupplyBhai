@@ -14,28 +14,13 @@ require_subscription()
 col1, col2 = st.columns(2)
 
 with col1:
-    if st.button("Manage Subscription"):
+    if st.button("⚙️Manage Subscription"):
         url = create_customer_portal(st.session_state.email)
         st.markdown(f"[Open Customer Portal]({url})")
 
-manage_clicked = st.markdown("""
-<button class="icon-btn" onclick="window.location.href='/manage'">
-    <img src="https://www.svgrepo.com/show/533558/settings.svg">
-    Manage Subscription
-</button>
-""", unsafe_allow_html=True)
-
-
 with col2:
-    if st.button("Logout"):
+    if st.button("🔓 Logout"):
         logout()
-
-logout_clicked = st.markdown("""
-<button class="icon-btn" onclick="window.location.href='/logout'">
-    <img src="https://www.svgrepo.com/show/533300/logout.svg">
-    Logout
-</button>
-""", unsafe_allow_html=True)
 
 
 # Set working directory
@@ -60,7 +45,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<p class="small-text">⏳ Loading…</p>', unsafe_allow_html=True)
+# st.markdown('<p class="small-text">⏳ Loading…</p>', unsafe_allow_html=True)
 
 
 
