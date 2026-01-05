@@ -10,17 +10,24 @@ from auth import require_subscription, create_customer_portal, logout
 # Require subscription or trial
 require_subscription()
 
-# Optional: Manage subscription + logout buttons
-col1, col2 = st.columns(2)
+st.markdown("""
+<style>
+/* Main app background */
+.stApp {
+    background-color: #A3B18A !important;   /* soft olive green */
+}
 
-with col1:
-    if st.button("⚙️Manage Subscription"):
-        url = create_customer_portal(st.session_state.email)
-        st.markdown(f"[Open Customer Portal]({url})")
+/* Sidebar background */
+section[data-testid="stSidebar"] {
+    background-color: #A3B18A !important;
+}
 
-with col2:
-    if st.button("🔓 Logout"):
-        logout()
+/* Optional: remove white padding box around content */
+div.block-container {
+    background-color: transparent !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 
 # Set working directory
@@ -60,8 +67,21 @@ st.markdown(
 
 user_question = st.text_area("Ask your question about the knowledgebase")
 
-if st.button("Answer"):
+if st.button("🗣 Answer"):
     answer = answer_question(user_question)
 
     st.markdown("SupplyBhai says")
     st.markdown(answer)
+
+# Optional: Manage subscription + logout buttons
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("⚙️Manage Subscription"):
+        url = create_customer_portal(st.session_state.email)
+        st.markdown(f"[Open Customer Portal]({url})")
+
+with col2:
+    if st.button("🔓 Logout"):
+        logout()
+
