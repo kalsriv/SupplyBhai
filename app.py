@@ -3,10 +3,15 @@ import streamlit as st
 from rag_helper_utility_push import process_document_to_chroma_db, answer_question
 
 from st_paywall import add_auth
-
-
 import streamlit as st
-from st_paywall import add_auth
+# from st_paywall import add_auth
+
+import st_paywall
+import inspect
+# import streamlit as st
+
+st.write(inspect.getsource(st_paywall.add_auth))
+
 
 # auth = add_auth(
 #     publishable_key=st.secrets["STRIPE_PUBLISHABLE_KEY"],
