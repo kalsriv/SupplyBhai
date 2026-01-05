@@ -65,34 +65,17 @@ st.markdown(
 # 2. USER QUESTION INPUT
 # -------------------------------
 
-# user_question = st.text_area("Ask your question about the knowledgebase")
+user_question = st.text_area("Ask your question about the knowledgebase")
 
-# if st.button("🗣 Answer"):
-#     answer = answer_question(user_question)
+if st.button("🗣 Answer"):
+    answer = answer_question(user_question)
 
-#     st.markdown("SupplyBhai says")
-#     st.markdown(answer)
+    st.markdown("SupplyBhai says")
+    st.markdown(answer)
 
-# Text input
-user_question = st.text_area(
-    "Ask your question about our SCM knowledgebase",
-    key="user_question"
-)
-
-# Buttons side-by-side
-col3, col4 = st.columns([1, 1])
-
-with col3:
-    if st.button("🗣 Answer"):
-        answer = answer_question(user_question)
-        st.markdown("SupplyBhai says")
-        st.markdown(answer)
-
-with col4:
-    if st.button("🧹 Clear"):
-        st.session_state["user_question"] = ""
-        st.experimental_rerun()
-
+if st.button("🧹 Clear"): 
+    st.session_state["user_question"] = "" 
+    # st.experimental_rerun()
 
 # Optional: Manage subscription + logout buttons
 col1, col2 = st.columns(2)
