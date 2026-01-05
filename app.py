@@ -76,7 +76,14 @@ with col1:
         url = create_customer_portal(st.session_state.email)
         st.markdown(f"[Open Customer Portal]({url})")
 
+# with col2:
+#     if st.button("🔓 Logout"):
+#         logout()
+
 with col2:
     if st.button("🔓 Logout"):
-        logout()
+        st.session_state.clear()
+        st.rerun()
+
+        
 
