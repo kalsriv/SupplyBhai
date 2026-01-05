@@ -4,34 +4,12 @@ from rag_helper_utility_push import process_document_to_chroma_db, answer_questi
 
 from st_paywall import add_auth
 import streamlit as st
-# from st_paywall import add_auth
 
-import st_paywall
-# import inspect
-# # import streamlit as st
+from auth import require_subscription
 
-# st.write(inspect.getsource(st_paywall.add_auth))
+# Require subscription before accessing the app
+require_subscription()
 
-
-
-auth = add_auth(
-    publishable_key=st.secrets["STRIPE_PUBLISHABLE_KEY"],
-    secret_key=st.secrets["STRIPE_SECRET_KEY"],
-    webhook_secret=st.secrets["WEBHOOK_SECRET"],
-    product_id="prod_XXXX",  # your Stripe product ID
-)
-
-# auth = add_auth(
-#     product_id="prod_TjUjjfnjwS4Ks0"
-# )
-
-
-# If user is not logged in, show login UI
-if not auth.is_user_logged_in():
-    st.title("SupplyBhai Pro")
-    st.write("Please log in or subscribe to access the tool.")
-    auth.login()
-    st.stop()
 
 # Set working directory
 working_dir = os.path.dirname(os.path.abspath(__file__))

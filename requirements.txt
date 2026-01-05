@@ -15,6 +15,3 @@ sentence-transformers
 unstructured
 unstructured[pdf]
 
-# Paywall (install from GitHub, NOT PyPI)
-st-paywall@git+https://github.com/tylerjrichards/st-paywall.git
-# force rebuild
