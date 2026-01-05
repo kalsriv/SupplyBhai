@@ -1,13 +1,8 @@
 import os
 import streamlit as st
 from rag_helper_utility_push import process_document_to_chroma_db, answer_question
-import streamlit as st
-
-from auth import require_subscription
-
 from auth import require_subscription, create_customer_portal, logout
 
-# Require subscription or trial
 require_subscription()
 
 st.markdown("""
@@ -51,10 +46,6 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-
-# st.markdown('<p class="small-text">⏳ Loading…</p>', unsafe_allow_html=True)
-
-
 
 st.markdown(
     "<p style='color: green; font-size: 0.8rem;'>✔️ Knowledgebase updated!</p>",
