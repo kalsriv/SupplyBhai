@@ -21,9 +21,9 @@ auth = add_auth(
     product_id="prod_XXXX",  # your Stripe product ID
 )
 
-auth = add_auth(
-    product_id="prod_TjUjjfnjwS4Ks0"
-)
+# auth = add_auth(
+#     product_id="prod_TjUjjfnjwS4Ks0"
+# )
 
 
 # If user is not logged in, show login UI
