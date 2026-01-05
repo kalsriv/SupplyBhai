@@ -7,10 +7,10 @@ from auth import require_subscription
 
 # Require subscription before accessing the app
 require_subscription()
-from auth import create_customer_portal
+# from auth import create_customer_portal
 
-portal_url = create_customer_portal(st.session_state.email)
-st.markdown(f"[Manage your subscription]({portal_url})")
+# portal_url = create_customer_portal(st.session_state.email)
+# st.markdown(f"[Manage your subscription]({portal_url})")
 
 
 # Set working directory
