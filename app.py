@@ -2,21 +2,24 @@ import os
 import streamlit as st
 from rag_helper_utility_push import process_document_to_chroma_db, answer_question
 
-from st_paywall import add_auth, login_button
+from st_paywall import add_auth
 
-# Initialize paywall
+
+import streamlit as st
+from st_paywall import add_auth
+
 auth = add_auth(
     publishable_key=st.secrets["STRIPE_PUBLISHABLE_KEY"],
     secret_key=st.secrets["STRIPE_SECRET_KEY"],
     webhook_secret=st.secrets["WEBHOOK_SECRET"],
-    product_id="prod_XXXX",  # from Stripe
+    product_id="prod_XXXX",  # your Stripe product ID
 )
 
-# Show login button if user not authenticated
+# If user is not logged in, show login UI
 if not auth.is_user_logged_in():
     st.title("SupplyBhai Pro")
     st.write("Please log in or subscribe to access the tool.")
-    login_button()
+    auth.login()
     st.stop()
 
 # Set working directory
