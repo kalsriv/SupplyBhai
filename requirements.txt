@@ -11,3 +11,4 @@ langchain-unstructured
 langchain-chroma
 langchain-groq
 pandas
+st_paywall
