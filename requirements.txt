@@ -14,4 +14,4 @@ langchain-groq
 sentence-transformers
 unstructured
 unstructured[pdf]
-
+stripe
