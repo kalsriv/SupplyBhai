@@ -68,6 +68,45 @@ if st.button("🧹 Clear"):
     st.session_state["user_question"] = "" 
     # st.experimental_rerun()
 
+# -------------------------------
+# 3. EXCEL ANALYSIS MODULE
+# -------------------------------
+
+st.subheader("📊 Analyze Your Supply Chain Excel File")
+
+uploaded_excel = st.file_uploader(
+    "Upload an Excel file (.xlsx, .xls)",
+    type=["xlsx", "xls"]
+)
+
+if uploaded_excel:
+    import pandas as pd
+
+    df = pd.read_excel(uploaded_excel)
+    st.success("Excel file uploaded successfully!")
+
+    st.write("### 🔍 Data Preview")
+    st.dataframe(df.head())
+
+    # Run analysis
+    from excel_analysis import analyze_supply_chain_excel
+    results = analyze_supply_chain_excel(df)
+
+    st.write("### 📈 Key Insights")
+    st.json(results)
+
+    # Optional: Ask SupplyBhai to explain the results
+    if st.button("🧠 Explain These Insights"):
+        explanation_prompt = f"""
+        You are SupplyBhai, a senior global supply chain consultant.
+        Explain the following Excel analysis to a supply chain manager:
+
+        {results}
+        """
+        explanation = llm.invoke(explanation_prompt)
+        st.write(explanation)
+
+
 # Optional: Manage subscription + logout buttons
 col1, col2 = st.columns(2)
 
