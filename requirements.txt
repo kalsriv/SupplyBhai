@@ -1,7 +1,7 @@
 python-dotenv
 streamlit
 pandas
-
+openpyxl
 # LangChain + RAG stack
 langchain
 langchain-community
