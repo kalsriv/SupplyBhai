@@ -94,7 +94,7 @@ if uploaded_excel:
 
     st.write("### 📈 Key Insights")
     st.json(results)
-
+llm = ChatGroq( model="llama-3.3-70b-versatile", temperature=0.0, api_key=st.secrets["GROQ_API_KEY"] )
     # Optional: Ask SupplyBhai to explain the results
     if st.button("🧠 Explain These Insights"):
         explanation_prompt = f"""
@@ -105,6 +105,7 @@ if uploaded_excel:
         """
         explanation = llm.invoke(explanation_prompt)
         st.write(explanation)
+
 
 
 # Optional: Manage subscription + logout buttons
