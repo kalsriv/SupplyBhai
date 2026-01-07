@@ -96,7 +96,7 @@ if uploaded_excel:
     st.json(results)
 llm = ChatGroq( model="llama-3.3-70b-versatile", temperature=0.0, api_key=st.secrets["GROQ_API_KEY"] )
     # Optional: Ask SupplyBhai to explain the results
-    if st.button("🧠 Explain These Insights"):
+if st.button("🧠 Explain These Insights"):
         explanation_prompt = f"""
         You are SupplyBhai, a senior global supply chain consultant.
         Explain the following Excel analysis to a supply chain manager:
