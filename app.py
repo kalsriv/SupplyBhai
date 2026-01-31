@@ -5,7 +5,10 @@ from rag_helper_utility_push import process_document_to_chroma_db, answer_questi
 from auth import require_subscription, create_customer_portal, logout
 import pandas as pd
 
-require_subscription()
+require_subscription(if login_successful:
+    st.session_state["logged_in"] = True
+    st.rerun()
+)
 
 st.markdown("""
 <style>
@@ -121,7 +124,7 @@ if uploaded_excel:
 
     st.write("### 📈 Key Insights")
     st.json(results)
-llm = ChatGroq( model="llama-3.3-70b-versatile", temperature=0.0, api_key=st.secrets["GROQ_API_KEY"] )
+llm = ChatGroq( model="llama-3.3-70b-versatile", temperature=0.4, api_key=st.secrets["GROQ_API_KEY"] )
     # Optional: Ask SupplyBhai to explain the results
 if st.button("🧠 Explain my excel sheet"):
         explanation_prompt = f"""
