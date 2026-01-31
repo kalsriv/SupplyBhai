@@ -3,6 +3,7 @@ import streamlit as st
 from langchain_groq import ChatGroq
 from rag_helper_utility_push import process_document_to_chroma_db, answer_question
 from auth import require_subscription, create_customer_portal, logout
+import pandas as pd
 
 require_subscription()
 
@@ -74,15 +75,46 @@ if st.button("🧹 Clear"):
 # 3. EXCEL ANALYSIS MODULE
 # -------------------------------
 
-st.subheader("📊 Analyze Your Supply Chain Excel File")
+# st.subheader("📊 Analyze Your Supply Chain Excel File")
 
-uploaded_excel = st.file_uploader(
-    "Upload an Excel file (.xlsx, .xls)",
-    type=["xlsx", "xls"]
-)
+# uploaded_excel = st.file_uploader(
+#     "Upload an Excel file (.xlsx, .xls)",
+#     type=["xlsx", "xls"]
+# )
+
+with st.expander("➕ Upload Excel for Analysis", expanded=False):
+    uploaded_excel = st.file_uploader(
+        "",
+        type=["xlsx", "xls"],
+        label_visibility="collapsed"
+    )
+
+    if uploaded_excel:
+        import pandas as pd
+        df = pd.read_excel(uploaded_excel)
+        st.success("Excel file uploaded successfully!")
+
+        st.write("### 🔍 Data Preview")
+        st.dataframe(df.head())
+
+        from excel_analysis import analyze_supply_chain_excel
+        results = analyze_supply_chain_excel(df)
+
+        st.write("### 📈 Key Insights")
+        st.json(results)
+
+        if st.button("🧠 Explain These Insights"):
+            explanation_prompt = f"""
+            You are SupplyBhai, a senior global supply chain consultant.
+            Explain the following Excel analysis to a supply chain manager:
+
+            {results}
+            """
+            explanation = llm.invoke(explanation_prompt)
+            st.write(explanation)
+
 
 if uploaded_excel:
-    import pandas as pd
 
     df = pd.read_excel(uploaded_excel)
     st.success("Excel file uploaded successfully!")

@@ -28,7 +28,15 @@ def tavily_search(query):
         return "\n\n".join(snippets[:5])
     except Exception as e:
         return f"(Tavily search failed: {str(e)})"
-
+    
+# silently fallback to RAG when travily crosses the limit
+def tavily_search(query):
+    try:
+        result = tavily.search(query=query, max_results=5)
+        snippets = [item["content"] for item in result.get("results", [])]
+        return "\n\n".join(snippets[:5])
+    except Exception as e:
+        return ""  
 
 # Embeddings + LLM
 embedding = HuggingFaceEmbeddings()
@@ -98,21 +106,6 @@ Rules:
     )
 
     return rag_chain
-
-# ---------------------------------------------------------
-# ANSWER USER QUESTION
-# ---------------------------------------------------------
-# def answer_question(user_question):
-#     vectordb = Chroma(
-#         persist_directory=f"{working_dir}/doc_vectorstore",
-#         embedding_function=embedding
-#     )
-
-#     retriever = vectordb.as_retriever()
-
-#     rag_chain = build_rag_chain(llm, retriever)
-
-#     return rag_chain.invoke({"question": user_question})
 
 
 def answer_question(user_question):
