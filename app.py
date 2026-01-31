@@ -70,7 +70,7 @@ if st.button("🧹 Clear"):
 # -------------------------------
 # 3. EXCEL ANALYSIS MODULE
 # -------------------------------
-
+st.text_area("Ask your question about the Excel file: you can also copy the response to the query section above for a real time research",)
 with st.expander("➕ Upload Excel for Analysis", expanded=False):
     uploaded_excel = st.file_uploader(
         "",
@@ -121,7 +121,7 @@ if uploaded_excel:
 
     st.write("### 📈 Key Insights")
     st.json(results)
-llm = ChatGroq( model="llama-3.3-70b-versatile", temperature=0.0, api_key=st.secrets["GROQ_API_KEY"] )
+llm = ChatGroq( model="llama-3.3-70b-versatile", temperature=0.3, api_key=st.secrets["GROQ_API_KEY"] )
     # Optional: Ask SupplyBhai to explain the results
 if st.button("🧠 Explain my excel sheet"):
         explanation_prompt = f"""
