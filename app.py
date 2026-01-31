@@ -7,6 +7,22 @@ import pandas as pd
 
 require_subscription()
 
+
+# Optional: Manage subscription + logout buttons
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("⚙️Manage Subscription"):
+        url = create_customer_portal(st.session_state.email)
+        st.markdown(f"[Open Customer Portal]({url})")
+
+with col2:
+    if st.button("🔓 Logout"):
+        st.session_state.clear()
+        st.rerun()
+
+        
+
 st.markdown("""
 <style>
 /* Main app background */
@@ -135,22 +151,4 @@ if st.button("🧠 Explain my excel sheet"):
 
 
 
-# Optional: Manage subscription + logout buttons
-col1, col2 = st.columns(2)
-
-with col1:
-    if st.button("⚙️Manage Subscription"):
-        url = create_customer_portal(st.session_state.email)
-        st.markdown(f"[Open Customer Portal]({url})")
-
-# with col2:
-#     if st.button("🔓 Logout"):
-#         logout()
-
-with col2:
-    if st.button("🔓 Logout"):
-        st.session_state.clear()
-        st.rerun()
-
-        
 
