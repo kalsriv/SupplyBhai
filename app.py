@@ -29,8 +29,9 @@ div.block-container {
 # Set working directory
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
-# st.title("SupplyBhai - Your Supply Chain Assistant 🤖")
-st.subheader("Ask questions about your global supply chain documents")
+# st.title("SupplyBhai - Your Real Time Supply Chain Assistant 🤖")
+st.subheader("Ask questions about your global supply chain including Real-time Port disruptions, Strike updates, Weather impacts and Company announcements")
+
 
 
 # -------------------------------

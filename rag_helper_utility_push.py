@@ -1,18 +1,34 @@
 import os
 from dotenv import load_dotenv
-
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
-
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-
+from tavily import TavilyClient
 load_dotenv()
 
 # Working directory
 working_dir = os.path.dirname(os.path.abspath(__file__))
+
+
+#Calling travily for real time search Max 1000 per day per month for free tier
+tavily = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+def tavily_search(query):
+    """
+    Lightweight wrapper around Tavily Search API.
+    Returns a short, clean text summary for the LLM.
+    """
+    try:
+        result = tavily.search(query=query, max_results=5)
+        # Extract text from results
+        snippets = [item["content"] for item in result.get("results", [])]
+        return "\n\n".join(snippets[:5])
+    except Exception as e:
+        return f"(Tavily search failed: {str(e)})"
+
 
 # Embeddings + LLM
 embedding = HuggingFaceEmbeddings()
@@ -39,51 +55,30 @@ def process_document_to_chroma_db(file_path):
     # Cloud should NEVER embed — return immediately
     return 0
 
-
-# # ---------------------------------------------------------
-# # BUILD RAG CHAIN
-# # ---------------------------------------------------------
-# def build_rag_chain(llm, retriever):
-#     prompt = ChatPromptTemplate.from_template("""
-#     You are a supply chain expert. Use ONLY the retrieved context to answer.
-
-#     Context:
-#     {context}
-
-#     Question:
-#     {question}
-
-#     Answer:
-#     """)
-
-#     rag_chain = (
-#         {
-#             "context": lambda x: retriever.invoke(x["question"]),
-#             "question": lambda x: x["question"]
-#         }
-#         | prompt
-#         | llm
-#         | StrOutputParser()
-#     )
 def build_rag_chain(llm, retriever):
     prompt = ChatPromptTemplate.from_template("""
 You are SupplyBhai — a senior global supply chain consultant with 20+ years of experience.
-Your job is to give clear, confident, expert answers based strictly on the retrieved context.
 
-Follow these rules:
+You have two sources of information:
+1. Retrieved supply chain knowledge (internal KB)
+2. Real-time web search results
 
-1. You ONLY answer questions that are directly related to supply chain, logistics, procurement, inventory, forecasting, S&OP, warehousing, transportation, manufacturing, or global trade. 
-2. If the user asks anything outside supply chain — including astrology, medicine, personal advice, relationships, religion, or unrelated academic topics — you MUST politely refuse and say the question is outside your domain. 
-3. Do NOT create analogies, metaphors, or forced interpretations to make an unrelated question seem relevant to supply chain. 
-4. Never mention the words “context”, “retriever”, “documents”, or “PDF”. 
-5. Never explain what information is missing. Simply answer if it is in-domain, or politely decline if it is out-of-domain. 
-6. When answering in-domain questions, write like a senior supply chain consultant: concise, authoritative, and practical. 
-7. Provide clear, actionable insights — not summaries or academic commentary.
+Use BOTH when relevant.
+
+Rules:
+- If the question requires real-time info (news, disruptions, prices, weather, strikes, delays), rely heavily on the web search.
+- If the question is conceptual, rely on the internal KB.
+- Never mention the words “context”, “retriever”, “documents”, “PDF”, or “search”.
+- Answer only supply chain–related questions. Politely decline unrelated topics.
+- Write like a senior supply chain consultant: concise, authoritative, and practical.
 
 ---
 
-### Retrieved Information:
+### Internal Knowledge:
 {context}
+
+### Real-Time Web Search:
+{web}
 
 ### User Question:
 {question}
@@ -94,6 +89,7 @@ Follow these rules:
     rag_chain = (
         {
             "context": lambda x: retriever.invoke(x["question"]),
+            "web": lambda x: tavily_search(x["question"]),
             "question": lambda x: x["question"]
         }
         | prompt
@@ -103,11 +99,22 @@ Follow these rules:
 
     return rag_chain
 
-
-
 # ---------------------------------------------------------
 # ANSWER USER QUESTION
 # ---------------------------------------------------------
+# def answer_question(user_question):
+#     vectordb = Chroma(
+#         persist_directory=f"{working_dir}/doc_vectorstore",
+#         embedding_function=embedding
+#     )
+
+#     retriever = vectordb.as_retriever()
+
+#     rag_chain = build_rag_chain(llm, retriever)
+
+#     return rag_chain.invoke({"question": user_question})
+
+
 def answer_question(user_question):
     vectordb = Chroma(
         persist_directory=f"{working_dir}/doc_vectorstore",
