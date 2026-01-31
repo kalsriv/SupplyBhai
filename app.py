@@ -52,7 +52,6 @@ st.subheader("Ask questions about your global supply chain 📦 🌐")
 # 1. AUTO-LOAD ALL PDFs FROM FOLDER
 # -------------------------------
 
-# st.subheader("Loading Please wait ...  ")
 
 st.markdown("""
 <style>
