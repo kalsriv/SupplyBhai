@@ -5,10 +5,7 @@ from rag_helper_utility_push import process_document_to_chroma_db, answer_questi
 from auth import require_subscription, create_customer_portal, logout
 import pandas as pd
 
-require_subscription(if login_successful:
-    st.session_state["logged_in"] = True
-    st.rerun()
-)
+require_subscription()
 
 st.markdown("""
 <style>
