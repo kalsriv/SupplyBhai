@@ -38,6 +38,50 @@ def tavily_search(query):
     except Exception as e:
         return ""  
 
+import requests
+import streamlit as st
+
+def get_weather(lat, lon):
+    """
+    Fetches current weather + alerts using OpenWeather One Call API.
+    Returns a clean text summary for the LLM.
+    """
+    try:
+        api_key = st.secrets["OPENWEATHER_API_KEY"]
+        url = (
+            f"https://api.openweathermap.org/data/3.0/onecall?"
+            f"lat={lat}&lon={lon}&units=metric&appid={api_key}"
+        )
+
+        response = requests.get(url)
+        data = response.json()
+
+        # Extract useful fields
+        current = data.get("current", {})
+        alerts = data.get("alerts", [])
+
+        summary = []
+
+        # Current weather
+        summary.append(f"Temperature: {current.get('temp')}°C")
+        summary.append(f"Humidity: {current.get('humidity')}%")
+        summary.append(f"Wind Speed: {current.get('wind_speed')} m/s")
+        summary.append(f"Conditions: {current.get('weather', [{}])[0].get('description')}")
+
+        # Alerts
+        if alerts:
+            summary.append("\n⚠️ Weather Alerts:")
+            for alert in alerts:
+                summary.append(f"- {alert.get('event')}: {alert.get('description')}")
+        else:
+            summary.append("\nNo severe weather alerts.")
+
+        return "\n".join(summary)
+
+    except Exception as e:
+        return f"(Weather lookup failed: {e})"
+
+
 # Embeddings + LLM
 embedding = HuggingFaceEmbeddings()
 
@@ -77,7 +121,7 @@ Rules:
 - If the question requires real-time info (news, disruptions, prices, weather, strikes, delays), rely heavily on the web search.
 - If the question is conceptual, rely on the internal KB.
 - Never mention the words “context”, “retriever”, “documents”, “PDF”, or “search”.
-- Answer only supply chain–related questions. Politely decline unrelated topics.
+- Answer only Supply chain, Value chain, Logistics chain, Chain of supply, Distribution network, Supply network, Procurement chain.  value chain related questions. Strictly decline unrelated topics.
 - Write like a senior supply chain consultant: concise, authoritative, and practical.
 
 ---
