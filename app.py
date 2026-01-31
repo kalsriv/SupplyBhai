@@ -56,7 +56,7 @@ st.markdown(
 # 2. USER QUESTION INPUT
 # -------------------------------
 
-user_question = st.text_area("Ask your question about the global supply chain Knowledgebase: you can also include the topics like Real-time Port disruptions, Current Tarrif, Strike updates, Weather impacts and Company announcements",)
+user_question = st.text_area("Ask your question about the global supply chain : you can also include the topics like Real-time Port disruptions, Current Tarrif, Strike updates, Weather impacts and Company announcements",)
 
 if st.button("🗣 Answer"):
     answer = answer_question(user_question)
@@ -70,7 +70,7 @@ if st.button("🧹 Clear"):
 # -------------------------------
 # 3. EXCEL ANALYSIS MODULE
 # -------------------------------
-st.text_area("Ask your question about the Excel file: copy you response to the query section above for a real time ",)
+
 with st.expander("➕ Upload Excel for Analysis", expanded=False):
     uploaded_excel = st.file_uploader(
         "",
