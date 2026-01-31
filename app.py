@@ -26,14 +26,11 @@ div.block-container {
 </style>
 """, unsafe_allow_html=True)
 
-
 # Set working directory
 working_dir = os.path.dirname(os.path.abspath(__file__))
 
 # st.title("SupplyBhai - Your Real Time Supply Chain Assistant 🤖")
-st.subheader("Ask questions about your global supply chain including Real-time Port disruptions, Strike updates, Weather impacts and Company announcements")
-
-
+st.subheader("Ask questions about your global supply chain 📦 🌐")
 
 # -------------------------------
 # 1. AUTO-LOAD ALL PDFs FROM FOLDER
@@ -59,7 +56,7 @@ st.markdown(
 # 2. USER QUESTION INPUT
 # -------------------------------
 
-user_question = st.text_area("Ask your question about the knowledgebase")
+user_question = st.text_area("Ask your question about the global supply chain Knowledgebase: you can also include the topics like Real-time Port disruptions, Current Tarrif, Strike updates, Weather impacts and Company announcements",)
 
 if st.button("🗣 Answer"):
     answer = answer_question(user_question)
@@ -69,18 +66,10 @@ if st.button("🗣 Answer"):
 
 if st.button("🧹 Clear"): 
     st.session_state["user_question"] = "" 
-    # st.experimental_rerun()
 
 # -------------------------------
 # 3. EXCEL ANALYSIS MODULE
 # -------------------------------
-
-# st.subheader("📊 Analyze Your Supply Chain Excel File")
-
-# uploaded_excel = st.file_uploader(
-#     "Upload an Excel file (.xlsx, .xls)",
-#     type=["xlsx", "xls"]
-# )
 
 with st.expander("➕ Upload Excel for Analysis", expanded=False):
     uploaded_excel = st.file_uploader(
@@ -106,7 +95,11 @@ with st.expander("➕ Upload Excel for Analysis", expanded=False):
         if st.button("🧠 Explain These Insights"):
             explanation_prompt = f"""
             You are SupplyBhai, a senior global supply chain consultant.
-            Explain the following Excel analysis to a supply chain manager:
+            Explain the following Excel analysis to a supply chain manager.
+            When expliaining, use simple terms and avoid shwing tons of data points, 
+            focus on high level insights and recommendations, not raw data, provide 
+            a human friendly explanation of the observations.
+        
 
             {results}
             """
@@ -130,7 +123,7 @@ if uploaded_excel:
     st.json(results)
 llm = ChatGroq( model="llama-3.3-70b-versatile", temperature=0.0, api_key=st.secrets["GROQ_API_KEY"] )
     # Optional: Ask SupplyBhai to explain the results
-if st.button("🧠 Explain These Insights"):
+if st.button("🧠 Explain my excel sheet"):
         explanation_prompt = f"""
         You are SupplyBhai, a senior global supply chain consultant.
         Explain the following Excel analysis to a supply chain manager:
